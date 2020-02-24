@@ -31,9 +31,9 @@ from geopandas.tools import sjoin
 # Nettoyage des données 
 #  Communes 
 direct = os.getcwd()
-communes = gpd.read_file(direct +'\\shapefile\\communes_modif.shp')
+communes = gpd.read_file(direct +'/shapefile/communes_modif.shp')
 communes=communes.set_geometry('geometry')
-paris =gpd.read_file(direct + '\\shapefile\\arrondissements.shp')
+paris =gpd.read_file(direct + '/shapefile/arrondissements.shp')
 paris['c_arinsee']=paris['c_arinsee'].astype(int)
 paris=paris[['c_arinsee','l_ar','geometry']]
 paris=paris.rename(columns={"c_arinsee": "insee", "l_ar": "nom"})
@@ -45,7 +45,7 @@ merge_year = pd.DataFrame({'year_rer':[1937,1977,1981,2017],'year_pop':[1946,197
                         'steps':[1,2,3,4]})
 
 # Population 
-pop = gpd.read_file(direct + '\\shapefile\\donnees-communales-sur-la-population-dile-de-france.shp')
+pop = gpd.read_file(direct + '/shapefile/donnees-communales-sur-la-population-dile-de-france.shp')
 pop.insee=pop.insee.astype(int)
 pop.insee=pop.insee.astype(str)
 pop=pop[pop['insee'].str.startswith(('75','78','91','77','92','94','95','93'))]  
@@ -58,17 +58,17 @@ pop.year=pop.year.astype(int)
 pop=pop.merge(merge_year,left_on='year',right_on='year_pop')
 
 # Tracé RER 
-rer  = gpd.read_file(direct + '\\shapefile\\traces-du-reseau-ferre-idf.shp') 
+rer  = gpd.read_file(direct + '/shapefile/traces-du-reseau-ferre-idf.shp') 
 rer= rer[rer.reseau=='RER B']
 rer=rer.set_geometry('geometry')
 
 # Stations nom 
-stations  = gpd.read_file(direct + '\\shapefile\\emplacement-des-gares-idf-data-generalisee.shp') 
+stations  = gpd.read_file(direct + '/shapefile/emplacement-des-gares-idf-data-generalisee.shp') 
 stations=stations[stations['res_com'].str.contains("RER B")]
 stations=stations[['nom_long','geometry']]
 stations=stations[['nom_long','geometry']]
 rer= rer[['objectid','geometry']]
-merging=pd.read_csv(direct + '\\merging_file.csv')
+merging=pd.read_csv(direct + '/merging_file.csv')
 stations=stations.merge(merging,on='nom_long')
 
 
