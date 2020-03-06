@@ -9,3 +9,7 @@ Les sources pour voir les metadata :
 - Base POP_AGE_DENS_LOC : https://data.iledefrance.fr/explore/dataset/metropole-densites-de-population-par-commune/information/ 
 - Base trafic-annuel-entrant-par-station-du-reseau-ferre-2018 : https://dataratp.opendatasoft.com/explore/dataset/trafic-annuel-entrant-par-station-du-reseau-ferre-2018/export/ 
 - Base validations par gares : https://data.iledefrance-mobilites.fr/explore/dataset/validations-sur-le-reseau-ferre-nombre-de-validations-par-jour-1er-sem/export/?refine.jour=2019&refine.jour=2019%2F01 (data = FREQ_GARES_SEM1_2019)
+- Base ISF : 
+https://www.data.gouv.fr/fr/datasets/impot-de-solidarite-sur-la-fortune-impot-sur-la-fortune-immobiliere/
+- Base méddecins : 
+https://data.iledefrance.fr/explore/dataset/annuaire-et-localisation-des-professionnels-de-sante/export/
