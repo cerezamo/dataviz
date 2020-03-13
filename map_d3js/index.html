@@ -90,8 +90,8 @@
             // Test couleurs dynamiques
             // Dégradé de couleurs en fonction de la population
             .style("fill", function(d) {
-                var pop = d.properties.population;
-                var couleur = d3.scaleLinear().domain([0, d3.max(geojson.features, function(e) { return e.properties.population;})])
+                var pop = d.properties.pct_ch;
+                var couleur = d3.scaleLinear().domain([d3.min(geojson.features, function(e) { return e.properties.pct_ch;}), d3.max(geojson.features, function(e) { return e.properties.pct_ch;})])
                                 .range(["white", "red"]);
                 return couleur(pop);
             })
