@@ -59,7 +59,7 @@
   
   const path = d3.geoPath();
   
-  const projection = d3.geoMercator()
+  const projection = d3.geoEquirectangular()
     .center([2.332978, 48.860117])
     .scale(40000)
     .translate([width / 2, height / 2]);
@@ -75,6 +75,8 @@
 
   // Append the group that will contain our paths
   const deps = svg.append("g");
+  const ligne = svg.append("g");
+  const stations = svg.append("g");
   
   // const geojson = d3.json("departments.json");
    //const geojson = getDepartments();
@@ -84,10 +86,14 @@
   var promises = [];
     promises.push(d3.json('https://raw.githubusercontent.com/cerezamo/dataviz/master/Graphique_bokeh/pop_comgeo.geojson'))
     promises.push(d3.csv("https://raw.githubusercontent.com/cerezamo/dataviz/master/variables.csv"))
+    promises.push(d3.json("https://raw.githubusercontent.com/cerezamo/dataviz/master/Graphique_bokeh/stations.geojson"))
+    promises.push(d3.json("https://raw.githubusercontent.com/cerezamo/dataviz/master/Graphique_bokeh/rer.geojson"))
 
   Promise.all(promises).then(function(values){
     const geojson = values[0];
     const csv = values[1];
+    const geojson_stations = values[2];
+    const geojson_rer = values[3];
   
     
   var features = deps
@@ -125,7 +131,6 @@
 
       
   csv.forEach(function(e,i) {
-     console.log("#d" +  e.insee);
     d3.select(("#d" +  e.insee))
       .style("fill", function(d) { return quantile(+e.densitehabkm2); })
       .on("mouseover", function(d) {
@@ -145,8 +150,39 @@
       });
   });
 
-  //console.log(csv.insee);
 
+	ligne.selectAll("path")
+	    .data(geojson_rer.features)
+	    .enter()
+	    .append("path")
+	    .attr("d", path)
+	    .style("stroke", "blue")
+	    .style("stroke-width", "3px");
+
+	stations.selectAll("path")
+	    .data(geojson_stations.features)
+	    .enter()
+	    .append("path")
+	    .attr("d", path)
+	    .style("stroke", "blue")
+	    .style("stroke-width", "3px")
+	    .style("fill", "white")
+	    .on("mouseover", function(d) {
+		div.transition()
+		   .duration(200)
+		   .style("opacity", 0.9);
+		div.html("Station : " + d.properties.nom_long)
+		    // on récupère la position de la souris et déplaçons la fenêtre qui apparait de quelques pixels
+		   .style("left", (d3.event.pageX + 30) + "px")
+		   .style("top", (d3.event.pageY - 30) + "px");
+	    })
+	    .on("mouseout", function(d) {
+		div.style("opacity", 0)
+		div.html("")
+		    // On le déplace en dehors de la zone visible car même avec une opacité de 0 il recouvert les autres communes
+		   .style("left", "-500px")
+		   .style("top", "-500px");
+	    });
 });
 
 
